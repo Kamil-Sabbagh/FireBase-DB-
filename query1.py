@@ -15,6 +15,9 @@ def query_1_local():
     payments = list(db.reference('payment').order_by_child('rental_id').get())
     rentals = list(db.reference('rental').order_by_child('rental_id').get())
 
+    payments = payments[1:]
+    rentals = rentals[1:]
+    #print(payments[1])
     # The tables are sorted, so we can use 2 pointers to match the rental_id
     p_i = 0
     joint_table = []
@@ -29,6 +32,7 @@ def query_1_local():
 
     # Making the aggregation
     payments_by_amount = list(db.reference('payment').order_by_child('amount').get())
+    payments_by_amount = payments_by_amount[1:]
     for i in joint_table:
 
         # Binary search the answer
@@ -87,13 +91,13 @@ def query_1_with_extra_table():
         return new_table
     return table
 
-# print("Executing query 1")
-# before = datetime.now()
-# result = query_1_with_extra_table()
-# after = datetime.now()
-# delta = after - before
-# print(result)
-# print("Total time to complete the query : " + str(delta.total_seconds()))
+print("Executing query 1")
+before = datetime.now()
+result = query_1_with_extra_table()
+after = datetime.now()
+delta = after - before
+print(result)
+print("Total time to complete the query : " + str(delta.total_seconds()))
 
 
 # This is an example on how to add a listener of the database
@@ -115,8 +119,7 @@ def cb(something):
         for x in rental:
             tmp[x] = rental[x]
         db.reference('payment_rental_smaller_pay').child(something.path[1:]).set(something.data)
-            
 
 
-#We are going to set the listener to listen to new payments
-db.reference('payment').listen(cb)
+# We are going to set the listener to listen to new payments
+# db.reference('payment').listen(cb)
