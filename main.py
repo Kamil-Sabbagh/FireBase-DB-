@@ -1,13 +1,9 @@
 import pyrebase
 import psycopg2
-import firebase_admin
 import time
-import firebase_admin
-from firebase_admin import credentials
-from firebase_admin import db
-from datetime import datetime
-import timeit
 
+
+#connecting to PGadmin DataBase
 con = psycopg2.connect(database="DVD_Rental", user="postgres",
                        password="postgres", host="127.0.0.1", port="5432")
 
@@ -15,6 +11,7 @@ original_tables = [ ]
 db_cursor = con.cursor()
 curs = con.cursor()
 
+# the following function is used to get the names of all the tables in DataBase
 def GetTableList(t_schema):
     # Retrieve the table list
     s = ""
@@ -43,18 +40,7 @@ t_schema = "public"
 GetTableList(t_schema)
 
 
-# firebaseConfig = {
-#     'apiKey': "AIzaSyDEjNSqGvvtoZ4c5LDnPoZJggikBgC5-p8",
-#     'authDomain': "test-8d0da.firebaseapp.com",
-#     'databaseURL': "https://test-8d0da-default-rtdb.firebaseio.com",
-#     'projectId': "test-8d0da",
-#     'storageBucket': "test-8d0da.appspot.com",
-#     'messagingSenderId': "805802577582",
-#     'appId': "1:805802577582:web:61dd106aeff2568c4ee73f",
-#     'measurementId': "G-DSGCSN7XQG"
-#   }
-#
-#
+#connecting to FireBase DataBase
 firebaseConfig = {
     'apiKey': "AIzaSyAfSnRHC913I0_zR5LdUZCk-xZs_YFio54",
     'authDomain': "assignment-2-e7286.firebaseapp.com",
@@ -69,9 +55,11 @@ firebase = pyrebase.initialize_app(firebaseConfig)
 
 db = firebase.database()
 
+#Time for the total time ( Installation time + bulking time )
 total_time = time.time()
 
-
+#To achive maximum speed of installation we made a dictionary representing the whole DataBase
+# { Table { entry ID ( the primary key) { Data } }  }
 all_tables = { }
 for table in original_tables :
     curs.execute(f"SELECT * FROM {table} " )
@@ -93,15 +81,7 @@ for table in original_tables :
 
     all_tables[table] = [a_table]
 
-# cred = credentials.Certificate('certificate.json')
-#
-# firebase_admin.initialize_app(cred, {
-#     'databaseURL' : 'https://assignment-2-e7286-default-rtdb.firebaseio.com/'
-# })
-#
-# db.reference().delete()
-#
-# print(all_tables)
+
 print(f"Installation time : {time.time() - total_time} seconds.")
 bulking_time = time.time()
 
