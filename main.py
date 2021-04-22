@@ -60,7 +60,7 @@ total_time = time.time()
 
 #To achive maximum speed of installation we made a dictionary representing the whole DataBase
 # { Table { entry ID ( the primary key) { Data } }  }
-all_tables = { }
+all_tables = {}
 for table in original_tables :
     curs.execute(f"SELECT * FROM {table} " )
     colnames = [desc[0] for desc in curs.description]
@@ -77,9 +77,9 @@ for table in original_tables :
                 continue
 
             data[colnames[i]] = row[i]
-        a_table [ index+1 ] = data
+        a_table [ index + 1  ] = data
+    all_tables[table] = a_table
 
-    all_tables[table] = [a_table]
 
 
 print(f"Installation time : {time.time() - total_time} seconds.")
