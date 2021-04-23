@@ -40,6 +40,8 @@ t_schema = "public"
 GetTableList(t_schema)
 
 
+
+
 #connecting to FireBase DataBase
 firebaseConfig = {
     'apiKey': "AIzaSyAfSnRHC913I0_zR5LdUZCk-xZs_YFio54",
